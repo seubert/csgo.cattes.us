@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/codegangsta/martini"
 	"github.com/ell/csgo.cattes.us/oauth2"
 	"github.com/martini-contrib/render"
 	"net/http"
-	"fmt"
 )
 
 func Index(r render.Render, params martini.Params, tokens oauth2.Tokens) {

@@ -29,7 +29,7 @@ type SteamAccount struct {
 }
 
 type User struct {
-	Username string `json:"username"`
+	Username string
 }
 
 func Steam64ToSteamID(steam64 int64) string {
