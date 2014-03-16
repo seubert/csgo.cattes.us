@@ -56,9 +56,9 @@ func GetProfile(token string) (*Profile, error) {
 	r := &Profile{}
 	err = json.Unmarshal(data, &r)
 
-	//profile.User = r.User
-	//profile.Steam = r.Steam
-	//profile.SomethingAwful = r.SomethingAwful
+	profile.User = r.User
+	profile.Steam = r.Steam
+	profile.SomethingAwful = r.SomethingAwful
 
 	return profile, err
 }
