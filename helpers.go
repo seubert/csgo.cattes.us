@@ -1,38 +1,36 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
 	"crypto/tls"
-	"io/ioutil"
+	"encoding/json"
 	"errors"
+	"io/ioutil"
+	"net/http"
 )
 
-
 type Profile struct {
-	Username string
-	SomethingAwful *SomethingAwful
-	Steam *SteamAccount
+	User User
+	SomethingAwful SomethingAwful
+	Steam SteamAccount
 }
 
 type SomethingAwful struct {
-	Username string `json:"username"`
-	Url string `json:"url"`
-	UserID string `json:"userid"`
-	PostCount int `json:"postcount"`
-	RegDate string `json:"regdate"`
+	Username  string
+	Url       string
+	UserID    string
+	PostCount int
+	RegDate   string
 }
 
 type SteamAccount struct {
-	Username string `json:"username"`
-	Url string `json:"url"`
-	Userid string `json:"userid"`
+	Username string
+	Url      string
+	Userid   string
 }
 
 type User struct {
 	Username string `json:"username"`
 }
-
 
 func Steam64ToSteamID(steam64 int64) string {
 	return "todo"
@@ -64,18 +62,12 @@ func GetProfile(token string) (*Profile, error) {
 		return profile, err
 	}
 
-	user := &User{}
-	err = json.Unmarshal(*objmap["user"], &user)
+	r := &Profile{}
+	err = json.Unmarshal(data, &r)
 
-	steam := &SteamAccount{}
-	err = json.Unmarshal(*objmap["steam"], &steam)
-
-	somethingawful := &SomethingAwful{}
-	err = json.Unmarshal(*objmap["somethingawful"], &somethingawful)
-
-	profile.Username = user.Username
-	profile.Steam = steam
-	profile.SomethingAwful = somethingawful
+	profile.User = r.User
+	profile.Steam = r.Steam
+	profile.SomethingAwful = r.SomethingAwful
 
 	return profile, err
 }
