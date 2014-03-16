@@ -47,14 +47,7 @@ func GetProfile(token string) (*Profile, error) {
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
-
-	r := &Profile{}
-	err = json.Unmarshal(data, &r)
-
-	profile.User = r.User
-	profile.Steam = r.Steam
-	profile.SomethingAwful = r.SomethingAwful
-	profile.Active = r.Active
+	err = json.Unmarshal(data, &profile)
 
 	return profile, err
 }
