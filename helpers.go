@@ -3,15 +3,15 @@ package main
 import (
 	"crypto/tls"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 )
 
 type Profile struct {
-	User           struct { Username string }
+	User           struct{ Username string }
 	SomethingAwful SomethingAwful
 	Steam          SteamAccount
+	Active         bool
 }
 
 type SomethingAwful struct {
@@ -47,23 +47,18 @@ func GetProfile(token string) (*Profile, error) {
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
-	var objmap map[string]*json.RawMessage
-	err = json.Unmarshal(data, &objmap)
+	//var objmap map[string]*json.RawMessage
+	//err = json.Unmarshal(data, &objmap)
 
-	var active bool
-	err = json.Unmarshal(*objmap["active"], &active)
-
-	if !active {
-		err = errors.New("GoonAuth account is unverified")
-		return profile, err
-	}
+	//var active bool
+	//err = json.Unmarshal(*objmap["active"], &active)
 
 	r := &Profile{}
 	err = json.Unmarshal(data, &r)
 
-	profile.User = r.User
-	profile.Steam = r.Steam
-	profile.SomethingAwful = r.SomethingAwful
+	//profile.User = r.User
+	//profile.Steam = r.Steam
+	//profile.SomethingAwful = r.SomethingAwful
 
 	return profile, err
 }
