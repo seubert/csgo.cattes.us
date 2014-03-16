@@ -9,9 +9,9 @@ import (
 )
 
 type Profile struct {
-	User User
+	User           struct { Username string }
 	SomethingAwful SomethingAwful
-	Steam SteamAccount
+	Steam          SteamAccount
 }
 
 type SomethingAwful struct {
@@ -26,10 +26,6 @@ type SteamAccount struct {
 	Username string
 	Url      string
 	Userid   string
-}
-
-type User struct {
-	Username string
 }
 
 func Steam64ToSteamID(steam64 int64) string {
