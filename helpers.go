@@ -59,6 +59,7 @@ func GetProfile(token string) (*Profile, error) {
 	profile.User = r.User
 	profile.Steam = r.Steam
 	profile.SomethingAwful = r.SomethingAwful
+	profile.Active = r.Active
 
 	return profile, err
 }
