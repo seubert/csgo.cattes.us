@@ -47,11 +47,6 @@ func GetProfile(token string) (*Profile, error) {
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
-	//var objmap map[string]*json.RawMessage
-	//err = json.Unmarshal(data, &objmap)
-
-	//var active bool
-	//err = json.Unmarshal(*objmap["active"], &active)
 
 	r := &Profile{}
 	err = json.Unmarshal(data, &r)

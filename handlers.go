@@ -28,7 +28,7 @@ func LoggedIn(tokens oauth2.Tokens, w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		fmt.Println(profile.User.Username)
+		fmt.Println(profile.Active)
 	}
 
 	http.Redirect(w, r, "/", 302)
