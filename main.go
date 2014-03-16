@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/codegangsta/martini"
-	"github.com/martini-contrib/oauth2"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
+	"github.com/ell/csgo.cattes.us/oauth2"
 	"log"
 	"net/http"
 )
@@ -55,7 +55,7 @@ func (app *App) SetupMiddleware() {
 
 func (app *App) SetupRoutes() {
 	app.m.Get("/", Index)
-	app.m.Get("/testauth", TestAuth)
+	app.m.Get("/loggedin", LoggedIn)
 }
 
 func main() {

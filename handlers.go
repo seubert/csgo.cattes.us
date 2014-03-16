@@ -1,12 +1,14 @@
 package main
 
 import (
-	"github.com/martini-contrib/render"
 	"github.com/codegangsta/martini"
-	"github.com/martini-contrib/oauth2"
+	"github.com/ell/csgo.cattes.us/oauth2"
+	"github.com/martini-contrib/render"
+	"net/http"
+	"fmt"
 )
 
-func Index(r render.Render, params martini.Params) {
+func Index(r render.Render, params martini.Params, tokens oauth2.Tokens) {
 	r.HTML(200, "index", nil)
 }
 
@@ -16,6 +18,20 @@ func TestAuth(tokens oauth2.Tokens) string {
 	}
 
 	return "logged in"
+}
+
+func LoggedIn(tokens oauth2.Tokens, w http.ResponseWriter, r *http.Request) {
+	if !tokens.IsExpired() {
+		profile, err := GetProfile(tokens.Access())
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println(profile.Username)
+	}
+
+	http.Redirect(w, r, "/", 302)
 }
 
 func GetSongs() {
