@@ -1,1 +1,3 @@
-<h1>Hello, World!</h1>
+{{ if .Profile.Active }}
+<h1>{{ .Profile.User.Username }}</h1>
+{{ end }}

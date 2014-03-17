@@ -28,8 +28,14 @@ type SteamAccount struct {
 	Userid   string
 }
 
-func Steam64ToSteamID(steam64 int64) string {
-	return "todo"
+func (profile *Profile) ToJson() (string, error) {
+	data, err := json.Marshal(profile)
+	return string(data[:]), err
+}
+
+func (profile *Profile) FromJson(jsonData string) (*Profile, error) {
+	err := json.Unmarshal([]byte(jsonData), &profile)
+	return profile, err
 }
 
 func GetProfile(token string) (*Profile, error) {
