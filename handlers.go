@@ -10,6 +10,7 @@ import (
 
 func Index(r render.Render, params martini.Params, session sessions.Session) {
 	profileJson, ok := session.Get("Profile").(string)
+	messages := session.Flashes()
 	profile := new(Profile)
 
 	if ok {
@@ -18,8 +19,10 @@ func Index(r render.Render, params martini.Params, session sessions.Session) {
 
 	data := struct {
 		Profile *Profile
+		Messages []interface{}
 	}{
 		profile,
+		messages,
 	}
 
 	r.HTML(200, "index", data)

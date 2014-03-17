@@ -50,7 +50,7 @@ func (app *App) SetupMiddleware() {
 	}))
 
 	app.m.Use(render.Renderer())
-	app.m.Use(martini.Static("static"))
+	app.m.Use(martini.Static("public"))
 }
 
 func (app *App) SetupRoutes() {

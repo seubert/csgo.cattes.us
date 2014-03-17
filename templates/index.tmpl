@@ -1,3 +1,55 @@
-{{ if .Profile.Active }}
-<h1>{{ .Profile.User.Username }}</h1>
-{{ end }}
+<!doctype html>
+
+<head>
+    <link href="//bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Cattes Dot Us</a>
+          </div>
+
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              {{ if .Profile.Active }}
+              <li><a href="/music/upload">Upload Music</a></li>
+              <li><a href="/maps/upload">Upload Maps</a></li>
+              <li><a href="/logout">Log out of {{ .Profile.User.Username }}</a></li>
+              {{ else }}
+              <li><a href="/login">Log In With GoonAuth</a></li>
+              {{ end }}
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="jumbotron">
+        {{ range .Messages }}
+        {{ . }}
+        {{ end }}
+        <h1>Navbar example</h1>
+        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+        </p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
