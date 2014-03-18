@@ -66,7 +66,7 @@ func ParseMusicUpload(r *http.Request, session sessions.Session, db *sql.DB) (in
 		profile := new(Profile)
 		profile.FromJson(profileJson)
 
-		go HandleSongFile(songPath, files[i].Filename, profile, *db)
+		go HandleSongFile(songPath, files[i].Filename, profile, db)
 	}
 
 	response := Response{"File Transfer Completed"}
@@ -75,7 +75,7 @@ func ParseMusicUpload(r *http.Request, session sessions.Session, db *sql.DB) (in
 	return 200, string(j[:])
 }
 
-func HandleSongFile(path, fileName string, profile *Profile, db sql.DB) {
+func HandleSongFile(path, fileName string, profile *Profile, db *sql.DB) {
 	mp3File, err := id3.Open(path)
 	defer mp3File.Close()
 
@@ -93,7 +93,7 @@ func HandleSongFile(path, fileName string, profile *Profile, db sql.DB) {
 
 	fmt.Println(upload.Title)
 
-	db.Query("INSERT INTO music (file_name, uploader, artist, title, genre) VALUES ($1, $2, $3, $4, $5)",
+	row, _ := db.Query("INSERT INTO music (file_name, uploader, artist, title, genre) VALUES ($1, $2, $3, $4, $5)",
 		upload.FileName,
 		upload.Uploader,
 		upload.Artist,
@@ -101,5 +101,6 @@ func HandleSongFile(path, fileName string, profile *Profile, db sql.DB) {
 		upload.Genre,
 	)
 
+	defer row.Close()
 	return
 }

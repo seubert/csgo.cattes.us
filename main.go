@@ -6,9 +6,13 @@ import (
 	"github.com/ell/csgo.cattes.us/oauth2"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
 )
+
+var db *sql.DB
 
 type App struct {
 	m       *martini.ClassicMartini
@@ -27,15 +31,22 @@ func NewApp(address string) *App {
 	app.address = address
 	app.m = martini.Classic()
 
+	app.SetupDB()
 	app.SetupMiddleware()
 	app.SetupRoutes()
 
 	return app
 }
 
-func (app *App) RunServer() {
-	fmt.Println("Running server on " + app.address)
-	log.Fatal(http.ListenAndServe(app.address, app.m))
+func (app *App) SetupDB() *sql.DB {
+	db, err := sql.Open("mysql", "root:penis123@tcp(127.0.0.1)")
+
+	if err != nil {
+		fmt.Println(err)
+		panic(err)
+	}
+
+	return db
 }
 
 func (app *App) SetupMiddleware() {
@@ -55,7 +66,6 @@ func (app *App) SetupMiddleware() {
 
 	app.m.Use(martini.Static("public"))
 
-	db := SetupDB()
 	app.m.Map(db)
 }
 
@@ -65,6 +75,11 @@ func (app *App) SetupRoutes() {
 	app.m.Get("/music", GetMusic)
 	app.m.Get("/music/upload", oauth2.LoginRequired, MusicUploader)
 	app.m.Post("/music/upload", oauth2.LoginRequired, ParseMusicUpload)
+}
+
+func (app *App) RunServer() {
+	fmt.Println("Running server on " + app.address)
+	log.Fatal(http.ListenAndServe(app.address, app.m))
 }
 
 func main() {
