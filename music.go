@@ -50,7 +50,7 @@ func ParseMusicUpload(r *http.Request, session sessions.Session, db *sql.DB) (in
 			return http.StatusInternalServerError, err.Error()
 		}
 
-		songPath, _ := filepath.Abs("./public/uploads/music" + files[i].Filename)
+		songPath, _ := filepath.Abs("./public/uploads/music/" + files[i].Filename)
 		dst, err := os.Create(songPath)
 
 		defer dst.Close()
