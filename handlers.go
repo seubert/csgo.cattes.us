@@ -5,6 +5,8 @@ import (
 	"github.com/martini-contrib/render"
 	"github.com/ell/csgo.cattes.us/oauth2"
 	"github.com/martini-contrib/sessions"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"net/http"
 	"fmt"
 )
@@ -56,4 +58,24 @@ func LoggedIn(tokens oauth2.Tokens, w http.ResponseWriter, r *http.Request, sess
 	}
 
 	http.Redirect(w, r, "/", 302)
+}
+
+func DB() martini.Handler {
+	db, err := sql.Open("mysql", "root:penis123@tcp(127.0.0.1:3306)/csgo")
+
+	if err != nil {
+		fmt.Println(err)
+		panic(err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		fmt.Println(err)
+		panic(err.Error())
+	}
+
+	return func(c martini.Context) {
+		c.Map(&db)
+		c.Next()
+	}
 }
