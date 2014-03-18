@@ -38,15 +38,14 @@ func NewApp(address string) *App {
 	return app
 }
 
-func (app *App) SetupDB() *sql.DB {
-	db, err := sql.Open("mysql", "root:penis123@tcp(127.0.0.1)")
+func (app *App) SetupDB() {
+	var err error
+	db, err = sql.Open("mysql", "root:penis123@/csgo")
 
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
-
-	return db
 }
 
 func (app *App) SetupMiddleware() {

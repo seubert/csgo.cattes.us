@@ -66,6 +66,11 @@ func ParseMusicUpload(r *http.Request, session sessions.Session, db *sql.DB) (in
 		profile := new(Profile)
 		profile.FromJson(profileJson)
 
+		err = db.Ping()
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		go HandleSongFile(songPath, files[i].Filename, profile, db)
 	}
 
