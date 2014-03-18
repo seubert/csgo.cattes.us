@@ -15,13 +15,6 @@ type App struct {
 	address string
 }
 
-func GoonAuth(opts *oauth2.Options) martini.Handler {
-	opts.AuthUrl = "https://somethingauthful.com/o/authorize/"
-	opts.TokenUrl = "https://somethingauthful.com/o/token/"
-
-	return oauth2.NewOAuth2Provider(opts)
-}
-
 func NewApp(address string) *App {
 	app := new(App)
 	app.address = address
@@ -32,8 +25,6 @@ func NewApp(address string) *App {
 
 	return app
 }
-
-
 
 func (app *App) SetupMiddleware() {
 	store := sessions.NewCookieStore([]byte("changeme123"))

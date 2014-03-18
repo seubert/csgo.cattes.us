@@ -60,6 +60,13 @@ func LoggedIn(tokens oauth2.Tokens, w http.ResponseWriter, r *http.Request, sess
 	http.Redirect(w, r, "/", 302)
 }
 
+func GoonAuth(opts *oauth2.Options) martini.Handler {
+	opts.AuthUrl = "https://somethingauthful.com/o/authorize/"
+	opts.TokenUrl = "https://somethingauthful.com/o/token/"
+
+	return oauth2.NewOAuth2Provider(opts)
+}
+
 func DB() martini.Handler {
 	db, err := sql.Open("mysql", "root:penis123@tcp(127.0.0.1:3306)/csgo")
 
