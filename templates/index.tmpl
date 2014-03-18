@@ -22,28 +22,37 @@
           </div>
 
           <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="http://www.gametracker.com/server_info/188.27.200.210:27066/" target="_blank"><img src="http://cache.www.gametracker.com/server_info/188.27.200.210:27066/b_350_20_692108_381007_FFFFFF_000000.png" border="0" width="350" height="20" alt=""/></a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
-              {{ if .Profile.Active }}
+              {[{ if .Profile.Active }]}
               <li><a href="/music/upload">Upload Music</a></li>
-              <li><a href="/maps/upload">Upload Maps</a></li>
-              <li><a href="/logout">Log out of {{ .Profile.User.Username }}</a></li>
-              {{ else }}
+              <li><A href="/music">Browse Music</a></li>
+              <li><a href="/logout">Log out of {[{ .Profile.User.Username }]}</a></li>
+              {[{ else }]}
               <li><a href="/login">Log In With GoonAuth</a></li>
-              {{ end }}
+              {[{ end }]}
             </ul>
           </div>
 
         </div>
       </div>
 
+      {[{ if .Messages }]}
+      {[{ range .Messages }]}
+      <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p>{[{ . }]}</p>
+      </div>
+      {[{ end }]}
+      {[{ end }]}
+
       <div class="jumbotron">
-        {{ range .Messages }}
-        {{ . }}
-        {{ end }}
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <h1>Hey! What's Up?</h1>
+        <p>Welcome the the best CS:GO server ever. Unlike most other CS:GO servers, here at cattes.us we strive to create the shittiest game modes and plugins ever to give you the best worst gaming experience imaginable. Join today! Be sure to log in with you <a href="https://somethingauthful.com/">GoonAuth</a> account to upload music that can be played in game.
         <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+          <a class="btn btn-lg btn-primary" href="steam://connect/csgo.cattes.us:27015" role="button">Join the Server</a>
         </p>
       </div>
 

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/codegangsta/martini"
+	"github.com/ell/csgo.cattes.us/oauth2"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/sessions"
-	"github.com/ell/csgo.cattes.us/oauth2"
 	"log"
 	"net/http"
 )
@@ -49,13 +49,22 @@ func (app *App) SetupMiddleware() {
 		Scopes:       []string{"read"},
 	}))
 
-	app.m.Use(render.Renderer())
+	app.m.Use(render.Renderer(render.Options{
+		Delims: render.Delims{"{[{", "}]}"},
+	}))
+
 	app.m.Use(martini.Static("public"))
+
+	db := SetupDB()
+	app.m.Map(db)
 }
 
 func (app *App) SetupRoutes() {
 	app.m.Get("/", Index)
 	app.m.Get("/loggedin", LoggedIn)
+	app.m.Get("/music", GetMusic)
+	app.m.Get("/music/upload", oauth2.LoginRequired, MusicUploader)
+	app.m.Post("/music/upload", oauth2.LoginRequired, ParseMusicUpload)
 }
 
 func main() {
