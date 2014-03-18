@@ -35,6 +35,7 @@ func MusicUploader(r render.Render, params martini.Params) {
 
 func ParseMusicUpload(r *http.Request, session sessions.Session, db *sql.DB) (int, string) {
 	err := r.ParseMultipartForm(100000)
+
 	if err != nil {
 		return http.StatusInternalServerError, err.Error()
 	}
@@ -71,41 +72,27 @@ func ParseMusicUpload(r *http.Request, session sessions.Session, db *sql.DB) (in
 			fmt.Println(err)
 		}
 
-		go HandleSongFile(songPath, files[i].Filename, profile, db)
+		mp3File, err := id3.Open(songPath)
+		defer mp3File.Close()
+
+		if err != nil {
+			os.Remove(songPath)
+			return 404, "failure"
+		}
+
+		row, _ := db.Query("INSERT INTO music (file_name, uploader, artist, title, genre) VALUES ($1, $2, $3, $4, $5)",
+			files[i].Filename,
+			profile.User.Username,
+			mp3File.Artist(),
+			mp3File.Title(),
+			mp3File.Genre(),
+		)
+
+		defer row.Close()
 	}
 
 	response := Response{"File Transfer Completed"}
 	j, err := json.Marshal(response)
 
 	return 200, string(j[:])
-}
-
-func HandleSongFile(path, fileName string, profile *Profile, db *sql.DB) {
-	mp3File, err := id3.Open(path)
-	defer mp3File.Close()
-
-	if err != nil {
-		os.Remove(path)
-		return
-	}
-
-	upload := new(Upload)
-	upload.Uploader = profile.User.Username
-	upload.FileName = fileName
-	upload.Title = mp3File.Title()
-	upload.Artist = mp3File.Artist()
-	upload.Genre = mp3File.Genre()
-
-	fmt.Println(upload.Title)
-
-	row, _ := db.Query("INSERT INTO music (file_name, uploader, artist, title, genre) VALUES ($1, $2, $3, $4, $5)",
-		upload.FileName,
-		upload.Uploader,
-		upload.Artist,
-		upload.Title,
-		upload.Genre,
-	)
-
-	defer row.Close()
-	return
 }

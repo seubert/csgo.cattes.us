@@ -12,8 +12,6 @@ import (
 	"net/http"
 )
 
-var db *sql.DB
-
 type App struct {
 	m       *martini.ClassicMartini
 	address string
@@ -31,20 +29,29 @@ func NewApp(address string) *App {
 	app.address = address
 	app.m = martini.Classic()
 
-	app.SetupDB()
 	app.SetupMiddleware()
 	app.SetupRoutes()
 
 	return app
 }
 
-func (app *App) SetupDB() {
-	var err error
-	db, err = sql.Open("mysql", "root:penis123@/csgo")
+func DB() martini.Handler {
+	db, err := sql.Open("mysql", "root:penis123@tcp(127.0.0.1:3306)/csgo")
 
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		fmt.Println(err)
+		panic(err.Error())
+	}
+
+	return func(c martini.Context) {
+		c.Map(*db)
+		c.Next()
 	}
 }
 
@@ -59,13 +66,13 @@ func (app *App) SetupMiddleware() {
 		Scopes:       []string{"read"},
 	}))
 
+	app.m.Use(DB())
+
 	app.m.Use(render.Renderer(render.Options{
 		Delims: render.Delims{"{[{", "}]}"},
 	}))
 
 	app.m.Use(martini.Static("public"))
-
-	app.m.Map(db)
 }
 
 func (app *App) SetupRoutes() {
