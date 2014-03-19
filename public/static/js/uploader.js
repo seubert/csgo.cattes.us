@@ -8,7 +8,7 @@ angular.module('app', ['angularFileUpload'])
         });
 
         uploader.filters.push(function(item) {
-            if (item.type == 'audio/mp3') {
+            if (item.type == 'audio/mp3' || item.type == 'audio/mpeg') {
                 return true;
             } else {
                 return false;
