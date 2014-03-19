@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/codegangsta/martini"
-	"github.com/martini-contrib/render"
-	"github.com/ell/csgo.cattes.us/oauth2"
-	"github.com/martini-contrib/sessions"
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
-	"net/http"
 	"fmt"
+	"github.com/codegangsta/martini"
+	"github.com/ell/csgo.cattes.us/oauth2"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/sessions"
+	"net/http"
 )
 
 func Index(r render.Render, params martini.Params, session sessions.Session) {
@@ -82,7 +82,7 @@ func DB() martini.Handler {
 	}
 
 	return func(c martini.Context) {
-		c.Map(&db)
+		c.Map(db)
 		c.Next()
 	}
 }

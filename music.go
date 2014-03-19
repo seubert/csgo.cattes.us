@@ -56,10 +56,12 @@ func ParseMusicUpload(r *http.Request, session sessions.Session, db *sql.DB) (in
 		defer dst.Close()
 
 		if err != nil {
+			fmt.Println("Error creating -- " + err.Error())
 			return http.StatusInternalServerError, err.Error()
 		}
 
 		if _, err := io.Copy(dst, file); err != nil {
+			fmt.Println("Error copying -- " + err.Error())
 			return http.StatusInternalServerError, err.Error()
 		}
 

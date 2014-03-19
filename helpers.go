@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -26,6 +27,14 @@ type SteamAccount struct {
 	Username string
 	Url      string
 	Userid   string
+}
+
+func (profile *Profile) String() string {
+	return fmt.Sprintf("%s - Active: %s - SomethingAwful: %s - Steam: %s",
+		profile.User.Username,
+		profile.Active,
+		profile.SomethingAwful.Username,
+		profile.Steam.Username)
 }
 
 func (profile *Profile) ToJson() (string, error) {
